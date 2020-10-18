@@ -1,5 +1,5 @@
 <template>
-  <div id="nav">
+  <div class="container">
     <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link>
   </div>
@@ -7,9 +7,9 @@
 </template>
 
 <style lang="scss">
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
