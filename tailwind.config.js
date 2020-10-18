@@ -5,13 +5,13 @@ module.exports = {
   },
   purge: [],
   theme: {
-    extend: {},
+    extend: {}
   },
   variants: {
     variants: {
       translate: ["responsive", "hover", "focus", "motion-safe"],
-      textDecoration: ["responsive", "hover", "focus", "focus-visible"],
-    },
+      textDecoration: ["responsive", "hover", "focus", "focus-visible"]
+    }
   },
-  plugins: [],
+  plugins: []
 };
