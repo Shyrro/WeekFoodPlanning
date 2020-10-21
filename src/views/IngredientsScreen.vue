@@ -1,28 +1,37 @@
 <template>
-  <div v-if="componentMounted" class="grid grid-flex-row gap-5">
-    <div class="flex mb-4 w-full gap-4">
-      <div class="grid grid-flow-row auto-rows-max content-input-panel">
-        <input
-          type="text"
-          class="input border"
-          placeholder="Ingredient name"
-        />
-        <select name="select-unit" class="input border" placeholder="Select unit">
-          <option value="solo">Unitaire</option>
-          <option value="g">Gramme</option>
-        </select>
+  <div v-if="componentMounted">
+    <div class="p-grid">
+      <div class="p-col-12 p-md-6 p-lg-6">
+        <Card class="p-fluid">
+          <template #content>
+            <span class="p-float-label p-field">
+              <InputText
+                type="text"
+                id="ingredient-name"
+                v-model="ingredientName"
+              />
+              <label for="ingredient-name">Ingredient name</label>
+            </span>
+            <Dropdown
+              v-model="selectedUnit"
+              :options="optionUnits"
+              :filter="true"
+              optionLabel="name"
+              placeholder="Select a unit"
+            />
+          </template>
+        </Card>
       </div>
-      <div class="content-input-panel">
-        prout
+      <div class="p-col-12 p-md-6  p-lg-6">
+        <!-- list of ingredients  -->
+        <Card>
+          prout
+        </Card>
       </div>
+      <Button @click="goBack">
+        Go back
+      </Button>
     </div>
-    <button
-      
-      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-      @click="goBack"
-    >
-      Go back
-    </button>
   </div>
 </template>
 
@@ -37,30 +46,37 @@ export default defineComponent({
     const componentMounted = useHideComponentOnTransition();
 
     return {
-      componentMounted,
+      componentMounted
+    };
+  },
+  data() {
+    return {
+      ingredientName: "test",
+      selectedUnit: null,
+      optionUnits: [
+        {
+          code: "1",
+          name: "g"
+        },
+        {
+          code: "2",
+          name: "unit"
+        },
+        {
+          code: "3",
+          name: "cl"
+        }
+      ]
     };
   },
   methods: {
     goBack() {
       router.go(-1);
-    },
-  },
+    }
+  }
 });
 </script>
 <style lang="scss">
-.content-input-panel {
-  @apply flex flex-grow p-6 bg-white rounded-lg shadow-xl;
-}
-
-.input {
-  @apply rounded  text-xl flex flex-grow ;
-  display: block;
-  &::placeholder {
-    @apply text-gray-400; 
-  }
-
-  &:focus {
-    @apply outline-none bg-white shadow-outline border-gray-300;
-  }
+.semi-panel {
 }
 </style>
