@@ -15,7 +15,6 @@
             <Dropdown
               v-model="selectedUnit"
               :options="optionUnits"
-              :filter="true"
               optionLabel="name"
               placeholder="Select a unit"
             />
@@ -31,11 +30,14 @@
       <Button @click="goBack">
         Go back
       </Button>
+      <Button @click="changeTheme()">
+        Change Theme
+      </Button>
     </div>
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import router from "@/router";
 import { defineComponent } from "vue";
 import { useHideComponentOnTransition } from "@/composition-functions/transitions/handleTransitions";
@@ -53,6 +55,7 @@ export default defineComponent({
     return {
       ingredientName: "test",
       selectedUnit: null,
+      theme: "dark",
       optionUnits: [
         {
           code: "1",
@@ -72,6 +75,11 @@ export default defineComponent({
   methods: {
     goBack() {
       router.go(-1);
+    },
+    changeTheme() {
+      import(
+        `primevue/resources/themes/bootstrap4-${this.theme}-purple/theme.css`
+      );
     }
   }
 });

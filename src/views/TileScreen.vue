@@ -15,20 +15,20 @@ import router from "@/router";
 export default defineComponent({
   name: "TileScreen",
   components: {
-    Tile,
+    Tile
   },
   setup() {
     const componentMounted = useHideComponentOnTransition();
 
     return {
-      componentMounted,
+      componentMounted
     };
   },
   methods: {
     goToIngredients() {
       router.push({ path: "/IngredientsScreen" });
-    },
-  },
+    }
+  }
 });
 </script>
 <style lang="scss">
