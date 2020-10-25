@@ -1,22 +1,45 @@
 <template>
-  <div v-if="componentMounted" class="tile-container">
-    <tile class="flex-grow" label="Add ingredient" @click="goToIngredients" />
-    <tile class="flex-grow" label="Add recipee" />
-    <tile class="flex-grow" label="Plan your week" />
+  <div v-if="componentMounted" class="p-grid">
+    <div class="p-col-12 p-md-6 p-lg-4">
+      <Card class="p-fluid" @click="goToIngredients">
+        <template #title>
+          Add ingredient
+        </template>
+        <template #content>
+          <p>Add your ingredients</p>
+        </template>
+      </Card>
+    </div>
+    <div class="p-col-12 p-md-6 p-lg-4">
+      <Card class="p-fluid">
+        <template #title>
+          Add recipee
+        </template>
+        <template #content>
+          <p>Add your recipees</p>
+        </template>
+      </Card>
+    </div>
+    <div class="p-col-12 p-md-6 p-lg-4">
+      <Card class="p-fluid">
+        <template #title>
+          Planning
+        </template>
+        <template #content>
+          <p>Plan your week</p>
+        </template>
+      </Card>
+    </div>
   </div>
 </template>
 
 <script>
 import { defineComponent } from "vue";
-import Tile from "@/components/Tile.vue";
 import { useHideComponentOnTransition } from "@/composition-functions/transitions/handleTransitions";
 import router from "@/router";
 
 export default defineComponent({
   name: "TileScreen",
-  components: {
-    Tile
-  },
   setup() {
     const componentMounted = useHideComponentOnTransition();
 

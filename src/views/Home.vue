@@ -18,6 +18,10 @@ export default defineComponent({
 });
 </script>
 <style lang="scss">
+.container {
+  padding: 15px;
+}
+
 .separator {
   height: 2px;
   @apply bg-gray-300 flex-grow;
