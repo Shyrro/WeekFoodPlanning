@@ -6,4 +6,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: "SweetsDelight";
+  src: url("../src/assets/font/SweetsDelightDemo.otf") format("opentype");
+}
 </style>
