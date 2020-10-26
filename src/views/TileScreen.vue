@@ -1,7 +1,7 @@
 <template>
   <div v-if="componentMounted" class="p-grid">
     <div class="p-col-12 p-md-6 p-lg-4">
-      <Card class="p-fluid" @click="goToIngredients">
+      <Card class="p-fluid p-shadow-3" @click="goToIngredients">
         <template #title>
           Add ingredient
         </template>
@@ -11,7 +11,7 @@
       </Card>
     </div>
     <div class="p-col-12 p-md-6 p-lg-4">
-      <Card class="p-fluid">
+      <Card class="p-fluid p-shadow-3">
         <template #title>
           Add recipee
         </template>
@@ -21,7 +21,7 @@
       </Card>
     </div>
     <div class="p-col-12 p-md-6 p-lg-4">
-      <Card class="p-fluid">
+      <Card class="p-fluid p-shadow-3">
         <template #title>
           Planning
         </template>

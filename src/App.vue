@@ -11,4 +11,8 @@
   font-family: "SweetsDelight";
   src: url("../src/assets/font/SweetsDelightDemo.otf") format("opentype");
 }
+
+html {
+  background-color: #7bab8e;
+}
 </style>

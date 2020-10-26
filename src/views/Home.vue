@@ -17,10 +17,12 @@ export default defineComponent({
   name: "Home"
 });
 </script>
-<style lang="scss">
+<style lang="scss">       
 .header-text {
   font-family: "SweetsDelight";
   padding: 20px;
+
+  text-shadow: 0px 0px 2px white, 4px 3px 0px white;
 }
 
 .container {

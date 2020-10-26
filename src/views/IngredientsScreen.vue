@@ -20,6 +20,9 @@
             />
           </template>
         </Card>
+        <Button class="p-col p-md-3">
+              Add
+            </Button>
       </div>
       <div class="p-col-12 p-md-6  p-lg-6">
         <!-- list of ingredients  -->
@@ -27,12 +30,12 @@
           prout
         </Card>
       </div>
-      <Button @click="goBack">
+      <!-- <Button @click="goBack">
         Go back
       </Button>
       <Button @click="changeTheme()">
         Change Theme
-      </Button>
+      </Button> -->
     </div>
   </div>
 </template>
