@@ -2,7 +2,7 @@ import { onMounted, Ref, ref } from "vue";
 import axios, { AxiosError, AxiosResponse } from "axios";
 
 export function useFetch<T>(dbTable: string): Ref<Array<T>> {
-  const apiString = `https://nextjs-iota-dusky-14.vercel.app/api/${dbTable}`;
+  const apiString = `https://nextjs.shyrro.vercel.app/api/${dbTable}`;
   const fetchedObject: Ref<Array<T>> = ref([]);
 
   onMounted(() => {
