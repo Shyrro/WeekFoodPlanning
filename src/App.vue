@@ -13,6 +13,6 @@
 }
 
 html {
-  background-color: #7bab8e;
+  background-color: #2e143c;
 }
 </style>

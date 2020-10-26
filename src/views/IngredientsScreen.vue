@@ -3,6 +3,9 @@
     <div class="p-grid">
       <div class="p-col-12 p-md-6 p-lg-6">
         <Card class="p-fluid">
+          <template #title>
+            Add ingredients
+          </template>
           <template #content>
             <span class="p-float-label p-field">
               <InputText
@@ -18,47 +21,64 @@
               optionLabel="name"
               placeholder="Select a unit"
             />
-          </template>
-        </Card>
-        <Button class="p-col p-md-3">
+
+            <ColorPicker id="color-picker" v-model="colorPicked" />
+            <Button>
               Add
             </Button>
-      </div>
-      <div class="p-col-12 p-md-6  p-lg-6">
-        <!-- list of ingredients  -->
-        <Card>
-          prout
+          </template>
         </Card>
       </div>
-      <!-- <Button @click="goBack">
-        Go back
-      </Button>
-      <Button @click="changeTheme()">
-        Change Theme
-      </Button> -->
+      <div class="p-col-12 p-md-6 p-lg-6">
+        <!-- list of ingredients  -->
+        <Card>
+          <template #title>
+            Existant ingredients
+          </template>
+          <template #content>
+            <span
+              v-for="ingredient in ingredients"
+              :key="ingredient._id"
+              class="p-tag p-tag-rounded"
+              style="background: red"
+            >
+              {{ ingredient.name }}
+            </span>
+          </template>
+        </Card>
+      </div>
     </div>
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import router from "@/router";
+import { Ingredient } from "@/Models/Ingredient";
 import { defineComponent } from "vue";
 import { useHideComponentOnTransition } from "@/composition-functions/transitions/handleTransitions";
+import { useFetch } from "@/composition-functions/requests/handleRequests";
+import ColorPicker from "primevue/colorpicker";
 
 export default defineComponent({
   name: "IngredientsScreen",
   setup() {
     const componentMounted = useHideComponentOnTransition();
+    const ingredients = useFetch<Ingredient>("ingredients");
 
     return {
-      componentMounted
+      componentMounted,
+      ingredients
     };
+  },
+  components: {
+    ColorPicker
   },
   data() {
     return {
-      ingredientName: "test",
+      ingredientName: "",
       selectedUnit: null,
       theme: "dark",
+      colorPicked: "FFFF",
       optionUnits: [
         {
           code: "1",
