@@ -2,44 +2,49 @@
   <div v-if="componentMounted">
     <div class="p-grid">
       <div class="p-col-12 p-md-6 p-lg-6">
-        <Card class="p-fluid">
+        <Card class="p-shadow-4">
           <template #title>
-            Add ingredients
+            Add ingredient
           </template>
           <template #content>
-            <span class="p-float-label p-field">
-              <InputText
-                type="text"
-                id="ingredient-name"
-                v-model="ingredientName"
+            <div class="p-fluid">
+              <span class="p-float-label p-field">
+                <InputText
+                  type="text"
+                  id="ingredient-name"
+                  v-model="selectedIngredient.name"
+                />
+                <label for="ingredient-name">Ingredient name </label>
+              </span>
+              <Dropdown
+                v-model="selectedIngredient.unit"
+                :options="optionUnits"
+                optionLabel="name"
+                placeholder="Select a unit"
               />
-              <label for="ingredient-name">Ingredient name</label>
-            </span>
-            <Dropdown
-              v-model="selectedUnit"
-              :options="optionUnits"
-              optionLabel="name"
-              placeholder="Select a unit"
-            />
+              <span class="p-text-left">ColorPicker : </span>
+              <ColorPicker
+                id="color-picker"
+                v-model="selectedIngredient.color"
+              />
+            </div>
 
-            <ColorPicker id="color-picker" v-model="colorPicked" />
-            <Button>
-              Add
-            </Button>
+            <Button label="Add" @click="addIngredient" />
           </template>
         </Card>
       </div>
       <div class="p-col-12 p-md-6 p-lg-6">
         <!-- list of ingredients  -->
-        <Card>
+        <Card class="p-shadow-4">
           <template #title>
             Existant ingredients
           </template>
           <template #content>
+            <ProgressSpinner v-if="!ingredientsLoaded" />
             <span
               v-for="ingredient in ingredients"
               :key="ingredient._id"
-              class="p-tag p-tag-rounded"
+              class="p-tag p-tag-rounded p-shadow-2 tag-size"
               style="background: red"
             >
               {{ ingredient.name }}
@@ -53,10 +58,14 @@
 
 <script lang="ts">
 import router from "@/router";
+import { nanoid } from "nanoid";
 import { Ingredient } from "@/Models/Ingredient";
 import { defineComponent } from "vue";
 import { useHideComponentOnTransition } from "@/composition-functions/transitions/handleTransitions";
-import { useFetch } from "@/composition-functions/requests/handleRequests";
+import {
+  useFetch,
+  useUpsert
+} from "@/composition-functions/requests/handleRequests";
 import ColorPicker from "primevue/colorpicker";
 
 export default defineComponent({
@@ -64,10 +73,12 @@ export default defineComponent({
   setup() {
     const componentMounted = useHideComponentOnTransition();
     const ingredients = useFetch<Ingredient>("ingredients");
+    const upsertIngredient = useUpsert<Ingredient>("ingredients");
 
     return {
       componentMounted,
-      ingredients
+      ingredients,
+      upsertIngredient
     };
   },
   components: {
@@ -75,10 +86,8 @@ export default defineComponent({
   },
   data() {
     return {
-      ingredientName: "",
-      selectedUnit: null,
+      selectedIngredient: {} as Ingredient,
       theme: "dark",
-      colorPicked: "FFFF",
       optionUnits: [
         {
           code: "1",
@@ -95,6 +104,11 @@ export default defineComponent({
       ]
     };
   },
+  computed: {
+    ingredientsLoaded(): boolean {
+      return this.ingredients.length > 0;
+    }
+  },
   methods: {
     goBack() {
       router.go(-1);
@@ -103,11 +117,34 @@ export default defineComponent({
       import(
         `primevue/resources/themes/bootstrap4-${this.theme}-purple/theme.css`
       );
+    },
+    addIngredient() {
+      let insertId = nanoid();
+
+      const idExists = (id: string, ingredients: Ingredient[]) =>
+        ingredients.find(ing => ing._id === id);
+
+      while (idExists(insertId, this.ingredients)) {
+        insertId = nanoid();
+      }
+
+      this.selectedIngredient._id = insertId;
+
+      this.upsertIngredient(this.selectedIngredient).then(() => {
+        this.ingredients.push(this.selectedIngredient);
+        this.selectedIngredient = {} as Ingredient;
+      });
     }
   }
 });
 </script>
 <style lang="scss">
-.semi-panel {
+.p-card {
+  transition: all 0.3s ease-in-out;
+}
+
+.tag-size {
+  font-size: 2em;
+  margin: 2px;
 }
 </style>

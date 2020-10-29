@@ -1,6 +1,6 @@
 <template>
   <div class="container mx-auto grid grid-flow-row gap-5">
-    <h2 class="header-text text-6xl text-center">Food Planner</h2>
+    <h2 class="header-text text-4xl text-center">My food friend</h2>
     <router-view v-slot="{ Component }">
       <transition name="slide">
         <component :is="Component" />
@@ -17,7 +17,7 @@ export default defineComponent({
   name: "Home"
 });
 </script>
-<style lang="scss">       
+<style lang="scss">
 .header-text {
   font-family: "SweetsDelight";
   padding: 20px;

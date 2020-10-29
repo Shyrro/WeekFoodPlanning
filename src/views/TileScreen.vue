@@ -1,7 +1,11 @@
 <template>
   <div v-if="componentMounted" class="p-grid">
     <div class="p-col-12 p-md-6 p-lg-4">
-      <Card class="p-fluid p-shadow-3" @click="goToIngredients">
+      <Card
+        class="p-fluid p-shadow-4 p-ripple gray"
+        v-ripple
+        @click="goToIngredients"
+      >
         <template #title>
           Add ingredient
         </template>
@@ -11,7 +15,7 @@
       </Card>
     </div>
     <div class="p-col-12 p-md-6 p-lg-4">
-      <Card class="p-fluid p-shadow-3">
+      <Card class="p-fluid p-shadow-4 p-ripple gray" v-ripple>
         <template #title>
           Add recipee
         </template>
@@ -21,7 +25,7 @@
       </Card>
     </div>
     <div class="p-col-12 p-md-6 p-lg-4">
-      <Card class="p-fluid p-shadow-3">
+      <Card class="p-fluid p-shadow-4 p-ripple gray" v-ripple>
         <template #title>
           Planning
         </template>
@@ -49,7 +53,9 @@ export default defineComponent({
   },
   methods: {
     goToIngredients() {
-      router.push({ path: "/IngredientsScreen" });
+      setTimeout(function() {
+        router.push({ path: "/IngredientsScreen" });
+      }, 150);
     }
   }
 });
@@ -57,5 +63,10 @@ export default defineComponent({
 <style lang="scss">
 .tile-container {
   @apply grid grid-flow-col grid-cols-3;
+}
+
+.p-ripple.gray .p-ink {
+  // background: rgba(256, 39, 176, 0.3);
+  background: rgba(211, 211, 211, 0.5);
 }
 </style>
