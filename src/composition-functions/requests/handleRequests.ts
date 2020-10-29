@@ -2,7 +2,7 @@ import { onMounted, Ref, ref } from "vue";
 import axios, { AxiosError, AxiosResponse } from "axios";
 
 export function useFetch<T>(dbTable: string): Ref<Array<T>> {
-  const apiString = `https://nextjs.shyrro.vercel.app/api/${dbTable}`;
+  const apiString = `http://localhost:3000/api/${dbTable}`;
   const fetchedObject: Ref<Array<T>> = ref([]);  
 
   onMounted(() => {
@@ -22,7 +22,7 @@ export function useFetch<T>(dbTable: string): Ref<Array<T>> {
 export function useUpsert<T> (dbTable: string) {
   
   const putData = async function(dbObject: T) {
-    const apiString = `https://nextjs.shyrro.vercel.app/api/${dbTable}`;
+    const apiString = `http://localhost:3000/api/${dbTable}`;
     try {
       await axios.put(apiString, dbObject);
     } catch(error) {

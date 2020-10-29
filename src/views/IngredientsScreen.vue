@@ -130,10 +130,14 @@ export default defineComponent({
 
       this.selectedIngredient._id = insertId;
 
-      this.upsertIngredient(this.selectedIngredient).then(() => {
-        this.ingredients.push(this.selectedIngredient);
-        this.selectedIngredient = {} as Ingredient;
-      });
+      this.upsertIngredient(this.selectedIngredient)
+        .then(() => {
+          this.ingredients.push(this.selectedIngredient);
+          this.selectedIngredient = {} as Ingredient;
+        })
+        .catch(e => {
+          this.ingredients.pop();
+        });
     }
   }
 });
