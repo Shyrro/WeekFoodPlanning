@@ -1,5 +1,5 @@
 <template>
-  <div v-if="componentMounted" class="p-grid">
+  <div class="p-grid">
     <div class="p-col-12 p-md-6 p-lg-4">
       <Card
         class="p-fluid p-shadow-4 p-ripple gray"
@@ -38,24 +38,14 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
-import { useHideComponentOnTransition } from "@/composition-functions/transitions/handleTransitions";
-import router from "@/router";
+import { defineComponent } from 'vue';
+import router from '@/router';
 
 export default defineComponent({
-  name: "TileScreen",
-  setup() {
-    const componentMounted = useHideComponentOnTransition();
-
-    return {
-      componentMounted
-    };
-  },
+  name: 'TileScreen',
   methods: {
     goToIngredients() {
-      setTimeout(function() {
-        router.push({ path: "/IngredientsScreen" });
-      }, 150);
+      router.push({ path: '/IngredientsScreen' });
     }
   }
 });

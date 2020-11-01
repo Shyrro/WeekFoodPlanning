@@ -2,7 +2,7 @@
   <div class="container mx-auto grid grid-flow-row gap-5">
     <h2 class="header-text text-4xl text-center">My food friend</h2>
     <router-view v-slot="{ Component }">
-      <transition name="slide">
+      <transition name="fade" mode="out-in">
         <component :is="Component" />
       </transition>
     </router-view>
@@ -36,12 +36,21 @@ export default defineComponent({
 
 .slide-leave-active,
 .slide-enter-active {
-  transition: 0.4s ease-in-out;
+  transition: 0.5s ease;
 }
 .slide-enter {
   transform: translate(100%, 0);
 }
 .slide-leave-to {
   transform: translate(-100%, 0);
+}
+
+.fade-leave-active,
+.fade-enter-active {
+  transition: opacity 0.2s ease;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

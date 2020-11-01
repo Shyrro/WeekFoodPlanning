@@ -1,110 +1,52 @@
 <template>
-  <div v-if="componentMounted">
-    <div class="p-grid">
-      <div class="p-col-12 p-md-6 p-lg-6">
-        <Card class="p-shadow-4">
-          <template #title>
-            Add ingredient
-          </template>
-          <template #content>
-            <div class="p-fluid">
-              <span class="p-float-label p-field">
-                <InputText
-                  v-model="selectedIngredient.name"
-                  id="ingredient-name"
-                  type="text"
-                />
-                <label for="ingredient-name">Ingredient name </label>
-              </span>
-              <Dropdown
-                v-model="selectedIngredient.unit"
-                :options="optionUnits"
-                option-label="code"
-                placeholder="Select a unit"
-              />
-              <span class="p-text-left">ColorPicker : </span>
-              <ColorPicker
-                id="color-picker"
-                v-model="selectedIngredient.color"
-              />
-            </div>
-
-            <Button label="Add" @click="addIngredient" />
-          </template>
-        </Card>
-      </div>
-      <div class="p-col-12 p-md-6 p-lg-6">
-        <!-- list of ingredients  -->
-        <Card class="p-shadow-4">
-          <template #title>
-            Existant ingredients
-          </template>
-          <template #content>
-            <ProgressSpinner v-if="!ingredientsLoaded" />
-            <span
-              v-for="ingredient in ingredients"
-              :key="ingredient._id"
-              class="p-tag p-tag-rounded p-shadow-2 tag-size"
-              style="background: red"
-            >
-              {{ ingredient.name }}
-            </span>
-          </template>
-        </Card>
-      </div>
-    </div>
-  </div>
+  <fillable-screen>
+    <template #left-panel>
+      <add-ingredient-form
+        :ingredients="ingredients"
+        :selected-ingredient="selectedIngredient"
+        @upserted-ingredient="updateIngredients"
+      ></add-ingredient-form>
+    </template>
+    <template #right-panel>
+      <ingredient-tags
+        :ingredients="ingredients"
+        @select-ingredient="updateSelectedIngredient"
+      ></ingredient-tags>
+    </template>
+  </fillable-screen>
 </template>
 
 <script lang="ts">
 import router from '@/router';
-import { nanoid } from 'nanoid';
 import { Ingredient } from '@/Models/Ingredient';
-import { defineComponent } from 'vue';
-import { useHideComponentOnTransition } from '@/composition-functions/transitions/handleTransitions';
-import {
-  useFetch,
-  useUpsert
-} from '@/composition-functions/requests/handleRequests';
-import ColorPicker from 'primevue/colorpicker';
+import { defineAsyncComponent, defineComponent } from 'vue';
+import { useFetch } from '@/composition-functions/requests/handleRequests';
 
 export default defineComponent({
   name: 'IngredientsScreen',
   setup() {
-    const componentMounted = useHideComponentOnTransition();
     const ingredients = useFetch<Ingredient>('ingredients');
-    const upsertIngredient = useUpsert<Ingredient>('ingredients');
 
     return {
-      componentMounted,
-      ingredients,
-      upsertIngredient
+      ingredients
     };
   },
   components: {
-    ColorPicker
+    FillableScreen: defineAsyncComponent(() =>
+      import('@/components/FillableScreen.vue')
+    ),
+    AddIngredientForm: defineAsyncComponent(() =>
+      import('@/components/AddIngredientForm.vue')
+    ),
+    IngredientTags: defineAsyncComponent(() =>
+      import('@/components/IngredientTags.vue')
+    )
   },
   data() {
     return {
-      selectedIngredient: {} as Ingredient,
       theme: 'dark',
-      optionUnits: [
-        {
-          code: 'g'
-        },
-        {
-          code: 'unit'
-        },
-        {
-          code: 'cl'
-        }
-      ]
+      selectedIngredient: {} as Ingredient
     };
-  },
-  computed: {
-    ingredientsLoaded(): boolean {
-      return this.ingredients.length > 0;
-    }
   },
   methods: {
     goBack() {
@@ -115,38 +57,20 @@ export default defineComponent({
         `primevue/resources/themes/bootstrap4-${this.theme}-purple/theme.css`
       );
     },
-    addIngredient() {
-      let insertId = nanoid();
-
-      const idExists = (id: string, ingredients: Ingredient[]) =>
-        ingredients.find(ing => ing._id === id);
-
-      while (idExists(insertId, this.ingredients)) {
-        insertId = nanoid();
+    updateIngredients(upsertedIngredient: Ingredient): void {
+      const indexToUpdate = this.ingredients.findIndex(
+        ing => ing._id === upsertedIngredient._id
+      );
+      if (indexToUpdate < 0) {
+        this.ingredients.push(upsertedIngredient);
+        return;
       }
 
-      this.selectedIngredient._id = insertId;
-
-      this.upsertIngredient(this.selectedIngredient)
-        .then(() => {
-          this.ingredients.push(this.selectedIngredient);
-          this.selectedIngredient = {} as Ingredient;
-        })
-        .catch(e => {
-          console.error(e);
-          this.ingredients.pop();
-        });
+      this.ingredients[indexToUpdate] = upsertedIngredient;
+    },
+    updateSelectedIngredient(ingredient: Ingredient): void {
+      this.selectedIngredient = ingredient;
     }
   }
 });
 </script>
-<style lang="scss">
-.p-card {
-  transition: all 0.3s ease-in-out;
-}
-
-.tag-size {
-  font-size: 2em;
-  margin: 2px;
-}
-</style>
