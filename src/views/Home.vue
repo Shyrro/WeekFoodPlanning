@@ -11,15 +11,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: "Home"
+  name: 'Home'
 });
 </script>
 <style lang="scss">
 .header-text {
-  font-family: "SweetsDelight";
+  font-family: 'SweetsDelight';
   padding: 20px;
 
   text-shadow: 0px 0px 2px white, 4px 3px 0px white;

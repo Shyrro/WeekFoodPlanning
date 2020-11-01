@@ -10,16 +10,16 @@
             <div class="p-fluid">
               <span class="p-float-label p-field">
                 <InputText
-                  type="text"
-                  id="ingredient-name"
                   v-model="selectedIngredient.name"
+                  id="ingredient-name"
+                  type="text"
                 />
                 <label for="ingredient-name">Ingredient name </label>
               </span>
               <Dropdown
                 v-model="selectedIngredient.unit"
                 :options="optionUnits"
-                optionLabel="name"
+                option-label="code"
                 placeholder="Select a unit"
               />
               <span class="p-text-left">ColorPicker : </span>
@@ -57,23 +57,23 @@
 </template>
 
 <script lang="ts">
-import router from "@/router";
-import { nanoid } from "nanoid";
-import { Ingredient } from "@/Models/Ingredient";
-import { defineComponent } from "vue";
-import { useHideComponentOnTransition } from "@/composition-functions/transitions/handleTransitions";
+import router from '@/router';
+import { nanoid } from 'nanoid';
+import { Ingredient } from '@/Models/Ingredient';
+import { defineComponent } from 'vue';
+import { useHideComponentOnTransition } from '@/composition-functions/transitions/handleTransitions';
 import {
   useFetch,
   useUpsert
-} from "@/composition-functions/requests/handleRequests";
-import ColorPicker from "primevue/colorpicker";
+} from '@/composition-functions/requests/handleRequests';
+import ColorPicker from 'primevue/colorpicker';
 
 export default defineComponent({
-  name: "IngredientsScreen",
+  name: 'IngredientsScreen',
   setup() {
     const componentMounted = useHideComponentOnTransition();
-    const ingredients = useFetch<Ingredient>("ingredients");
-    const upsertIngredient = useUpsert<Ingredient>("ingredients");
+    const ingredients = useFetch<Ingredient>('ingredients');
+    const upsertIngredient = useUpsert<Ingredient>('ingredients');
 
     return {
       componentMounted,
@@ -87,19 +87,16 @@ export default defineComponent({
   data() {
     return {
       selectedIngredient: {} as Ingredient,
-      theme: "dark",
+      theme: 'dark',
       optionUnits: [
         {
-          code: "1",
-          name: "g"
+          code: 'g'
         },
         {
-          code: "2",
-          name: "unit"
+          code: 'unit'
         },
         {
-          code: "3",
-          name: "cl"
+          code: 'cl'
         }
       ]
     };
@@ -136,6 +133,7 @@ export default defineComponent({
           this.selectedIngredient = {} as Ingredient;
         })
         .catch(e => {
+          console.error(e);
           this.ingredients.pop();
         });
     }
