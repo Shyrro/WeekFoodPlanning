@@ -4,7 +4,7 @@
       Add ingredient
     </template>
     <template #content>
-      <div class="p-fluid ">
+      <div class="p-fluid">
         <span class="p-float-label p-field">
           <InputText
             v-model="upsertedIngredient.name"
@@ -28,17 +28,23 @@
 </template>
 
 <script lang="ts">
-import { defineAsyncComponent, defineComponent, PropType } from 'vue';
+import { defineAsyncComponent, defineComponent, inject, PropType } from 'vue';
 import { useUpsert } from '@/composition-functions/requests/handleRequests';
-import { Ingredient } from '@/Models/Ingredient';
+
+import { IngredientModel } from '@/Models/Ingredient';
 import { nanoid } from 'nanoid';
+import {
+  ingredientStateIdentifier,
+  IngredientStore
+} from './local-states/IngredientState';
 
 export default defineComponent({
   setup() {
-    const upsertIngredient = useUpsert<Ingredient>('ingredients');
-
+    const upsertIngredient = useUpsert<IngredientModel>('ingredients');
+    const localStore = inject(ingredientStateIdentifier) as IngredientStore;
     return {
-      upsertIngredient
+      upsertIngredient,
+      localStore
     };
   },
   components: {
@@ -47,7 +53,7 @@ export default defineComponent({
   data() {
     return {
       optionUnits: ['g', 'unit', 'cl'],
-      newIngredient: {} as Ingredient
+      newIngredient: {} as IngredientModel
       // name: '',
       // color: '',
       // unit: ''
@@ -55,35 +61,31 @@ export default defineComponent({
   },
   props: {
     ingredients: {
-      type: Array as PropType<Ingredient[]>,
-      default: [] as Ingredient[]
-    },
-    selectedIngredient: {
-      type: Object as PropType<Ingredient>,
-      default: {} as Ingredient
+      type: Array as PropType<IngredientModel[]>,
+      default: [] as IngredientModel[]
     }
   },
   emits: ['upserted-ingredient'],
   computed: {
     upsertedIngredient: {
-      get(): Ingredient {
-        return this.selectedIngredient || this.newIngredient;
+      get(): IngredientModel {
+        return this.localStore.state.selectedIngredient;
       },
-      set(value: Ingredient): void {
-        this.newIngredient = value;
+      set(value: IngredientModel): void {
+        this.localStore.mutateIngredient(value);
       }
     }
   },
   methods: {
     addIngredient() {
-      if (!this.selectedIngredient.name) return;
+      if (!this.upsertedIngredient.name) return;
       // TODO : Add message to add cumpolsory name
       // If we want to update an ingredient, the id always exists
       // We want to look for existant id only if the current id is empty
       // empty _id means new ingredient
-      if (!this.selectedIngredient._id) {
+      if (!this.upsertedIngredient._id) {
         let insertId = nanoid();
-        const idExists = (id: string, ingredients: Ingredient[]) =>
+        const idExists = (id: string, ingredients: IngredientModel[]) =>
           ingredients.find(ing => ing._id === id);
 
         while (idExists(insertId, this.ingredients)) {
@@ -92,10 +94,10 @@ export default defineComponent({
         this.upsertedIngredient._id = insertId;
       }
 
-      this.upsertIngredient(this.selectedIngredient)
+      this.upsertIngredient(this.upsertedIngredient)
         .then(() => {
           this.$emit('upserted-ingredient', this.upsertedIngredient);
-          this.upsertedIngredient = {} as Ingredient;
+          this.upsertedIngredient = {} as IngredientModel;
         })
         .catch(e => {
           console.error(e);

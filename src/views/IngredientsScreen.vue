@@ -1,34 +1,41 @@
 <template>
-  <fillable-screen>
+  <FillableScreen>
     <template #left-panel>
-      <add-ingredient-form
+      <AddIngredientForm
         :ingredients="ingredients"
-        :selected-ingredient="selectedIngredient"
+        :selected-ingredient="localStore.state.selectedIngredient"
         @upserted-ingredient="updateIngredients"
-      ></add-ingredient-form>
+      ></AddIngredientForm>
     </template>
     <template #right-panel>
-      <ingredient-tags
+      <IngredientTags
         :ingredients="ingredients"
         @select-ingredient="updateSelectedIngredient"
-      ></ingredient-tags>
+      ></IngredientTags>
     </template>
-  </fillable-screen>
+  </FillableScreen>
 </template>
 
 <script lang="ts">
 import router from '@/router';
-import { Ingredient } from '@/Models/Ingredient';
-import { defineAsyncComponent, defineComponent } from 'vue';
+import { Ingredient, IngredientModel } from '@/Models/Ingredient';
+import {
+  createLocalStore,
+  ingredientStateIdentifier
+} from '@/components/local-states/IngredientState';
+import { defineAsyncComponent, defineComponent, provide } from 'vue';
 import { useFetch } from '@/composition-functions/requests/handleRequests';
 
 export default defineComponent({
   name: 'IngredientsScreen',
   setup() {
-    const ingredients = useFetch<Ingredient>('ingredients');
+    const ingredients = useFetch<IngredientModel>('ingredients');
+    const localStore = createLocalStore();
+    provide(ingredientStateIdentifier, localStore);
 
     return {
-      ingredients
+      ingredients,
+      localStore
     };
   },
   components: {
@@ -44,8 +51,7 @@ export default defineComponent({
   },
   data() {
     return {
-      theme: 'dark',
-      selectedIngredient: {} as Ingredient
+      theme: 'dark'
     };
   },
   methods: {
@@ -57,7 +63,7 @@ export default defineComponent({
         `primevue/resources/themes/bootstrap4-${this.theme}-purple/theme.css`
       );
     },
-    updateIngredients(upsertedIngredient: Ingredient): void {
+    updateIngredients(upsertedIngredient: IngredientModel): void {
       const indexToUpdate = this.ingredients.findIndex(
         ing => ing._id === upsertedIngredient._id
       );
@@ -68,8 +74,9 @@ export default defineComponent({
 
       this.ingredients[indexToUpdate] = upsertedIngredient;
     },
-    updateSelectedIngredient(ingredient: Ingredient): void {
-      this.selectedIngredient = ingredient;
+    updateSelectedIngredient(ingredient: IngredientModel): void {
+      const newIngredient = new Ingredient(ingredient);
+      this.localStore.mutateIngredient(newIngredient);
     }
   }
 });

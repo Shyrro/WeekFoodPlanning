@@ -19,14 +19,14 @@
 </template>
 
 <script lang="ts">
-import { Ingredient } from '@/Models/Ingredient';
+import { IngredientModel } from '@/Models/Ingredient';
 import { defineComponent, PropType } from 'vue';
 
 export default defineComponent({
   props: {
     ingredients: {
-      type: Array as PropType<Ingredient[]>,
-      default: [] as Ingredient[]
+      type: Array as PropType<IngredientModel[]>,
+      default: [] as IngredientModel[]
     }
   },
   emits: ['select-ingredient'],
@@ -36,7 +36,7 @@ export default defineComponent({
     }
   },
   methods: {
-    selectIngredient(ingredient: Ingredient): void {
+    selectIngredient(ingredient: IngredientModel): void {
       this.$emit('select-ingredient', ingredient);
     }
   }
@@ -45,7 +45,7 @@ export default defineComponent({
 
 <style scoped>
 .tag-size {
-  font-size: 1em;
+  font-size: 0.9em;
   margin: 2px;
 }
 </style>

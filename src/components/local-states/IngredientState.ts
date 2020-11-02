@@ -1,19 +1,29 @@
-import { Ingredient } from '@/Models/Ingredient';
-import { reactive, inject, readonly, provide } from 'vue';
+import { IngredientModel } from '@/Models/Ingredient';
+import { reactive } from 'vue';
 
-const stateIdentifier = Symbol('Ingredients');
+export const ingredientStateIdentifier = Symbol('Ingredients');
 
-export const createLocalState = () => {
-  const selectedIngredient = {} as Ingredient;
+export interface IngredientStore {
+  mutateIngredient: (payload: IngredientModel) => void;
+  state: IngredientState;
+}
+
+export interface IngredientState {
+  selectedIngredient: IngredientModel;
+}
+
+export const createLocalStore = () => {
+  const selectedIngredient = {} as IngredientModel;
 
   const localState = reactive({ selectedIngredient });
 
-  const mutateIngredient = (payload: Ingredient) => {
+  const mutateIngredient = (payload: IngredientModel) => {
     localState.selectedIngredient = payload;
   };
+  const localStore: IngredientStore = {
+    mutateIngredient,
+    state: localState
+  };
 
-  return { mutateIngredient, state: readonly(localState) };
+  return localStore;
 };
-
-export const useLocalState = inject(stateIdentifier);
-export const provideLocalState = provide(stateIdentifier, createLocalState());
