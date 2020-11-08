@@ -1,26 +1,18 @@
 <template>
-  <Card class="p-shadow-4">
+  <Card class="p-shadow-2">
     <template #title>
       Existant ingredients
     </template>
     <template #content>
       <ProgressSpinner v-if="!ingredientsLoaded" />
-      <span
-        v-for="ingredient in ingredients"
-        :key="ingredient._id"
-        class="p-tag p-tag-rounded tag-size"
-        :style="`background: #${ingredient.color}`"
-        @click="selectIngredient(ingredient)"
-      >
-        {{ ingredient.name }}
-      </span>
+      <ColoredTags :list="ingredients" @select-item="selectIngredient" />
     </template>
   </Card>
 </template>
 
 <script lang="ts">
 import { IngredientModel } from '@/Models/Ingredient';
-import { defineComponent, PropType } from 'vue';
+import { defineAsyncComponent, defineComponent, PropType } from 'vue';
 
 export default defineComponent({
   props: {
@@ -28,6 +20,11 @@ export default defineComponent({
       type: Array as PropType<IngredientModel[]>,
       default: [] as IngredientModel[]
     }
+  },
+  components: {
+    ColoredTags: defineAsyncComponent(() =>
+      import('@/components/ColoredTags.vue')
+    )
   },
   emits: ['select-ingredient'],
   computed: {
@@ -42,10 +39,3 @@ export default defineComponent({
   }
 });
 </script>
-
-<style scoped>
-.tag-size {
-  font-size: 0.9em;
-  margin: 2px;
-}
-</style>

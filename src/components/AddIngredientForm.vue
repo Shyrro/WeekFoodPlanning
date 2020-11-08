@@ -1,5 +1,5 @@
 <template>
-  <Card class="p-shadow-4 form-card">
+  <Card class="p-shadow-2 form-card">
     <template #title>
       Add ingredient
     </template>
@@ -54,9 +54,6 @@ export default defineComponent({
     return {
       optionUnits: ['g', 'unit', 'cl'],
       newIngredient: {} as IngredientModel
-      // name: '',
-      // color: '',
-      // unit: ''
     };
   },
   props: {
@@ -107,7 +104,7 @@ export default defineComponent({
   }
 });
 </script>
-<style scoped>
+<style lang="scss" scoped>
 .form-card {
   .p-card-body {
     .p-card-content {

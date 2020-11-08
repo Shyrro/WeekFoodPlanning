@@ -17,6 +17,7 @@ class Ingredient implements IngredientModel {
     this.unit = ingredient.unit;
     this.color = ingredient.color;
   }
+
 }
 
 export { Ingredient };
