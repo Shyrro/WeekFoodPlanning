@@ -1,30 +1,27 @@
 <template>
-  <div class="container mx-auto grid grid-flow-row gap-5">
-    <h2 class="header-text text-4xl text-center">My food friend</h2>
+  <ion-page class="container mx-auto grid grid-flow-row gap-5">
     <router-view v-slot="{ Component }">
       <transition name="fade" mode="out-in">
         <component :is="Component" />
       </transition>
     </router-view>
-    <span class="separator"></span>
-  </div>
+  </ion-page>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { IonRouterOutlet, IonPage, IonContent } from '@ionic/vue';
 
 export default defineComponent({
-  name: 'Home'
+  name: 'Home',
+  components: {
+    IonPage,
+    IonRouterOutlet,
+    IonContent
+  }
 });
 </script>
 <style lang="scss">
-.header-text {
-  font-family: 'SweetsDelight';
-  padding: 20px;
-
-  text-shadow: 0px 0px 2px white, 4px 3px 0px white;
-}
-
 .container {
   padding: 15px;
 }

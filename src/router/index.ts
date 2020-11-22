@@ -1,20 +1,20 @@
-import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
-import Home from "../views/Home.vue";
-import IngredientsScreen from "@/views/IngredientsScreen.vue";
-import TileScreen from "@/views/TileScreen.vue";
+import { createRouter, createWebHashHistory } from '@ionic/vue-router';
+import Home from '../views/Home.vue';
+import IngredientsScreen from '@/views/IngredientsScreen.vue';
+import TileScreen from '@/views/TileScreen.vue';
 
-const routes: Array<RouteRecordRaw> = [
+const routes = [
   {
-    path: "/",
-    name: "Home",
+    path: '/',
+    name: 'Home',
     component: Home,
     children: [
       {
-        path: "/",
+        path: '/',
         component: TileScreen
       },
       {
-        path: "/IngredientsScreen",
+        path: '/IngredientsScreen',
         component: IngredientsScreen
       }
     ]
