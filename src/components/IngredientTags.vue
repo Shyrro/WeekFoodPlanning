@@ -1,13 +1,13 @@
 <template>
-  <Card class="p-shadow-2">
-    <template #title>
-      Existant ingredients
-    </template>
-    <template #content>
-      <ProgressSpinner v-if="!ingredientsLoaded" />
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title> Existing ingredients </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-spinner name="crescent" v-if="!ingredientsLoaded" />
       <ColoredTags :list="ingredients" @select-item="selectIngredient" />
-    </template>
-  </Card>
+    </ion-card-content>
+  </ion-card>
 </template>
 
 <script lang="ts">
@@ -22,8 +22,8 @@ export default defineComponent({
     }
   },
   components: {
-    ColoredTags: defineAsyncComponent(() =>
-      import('@/components/ColoredTags.vue')
+    ColoredTags: defineAsyncComponent(
+      () => import('@/components/ColoredTags.vue')
     )
   },
   emits: ['select-ingredient'],

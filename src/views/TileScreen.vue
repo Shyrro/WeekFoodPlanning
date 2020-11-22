@@ -1,38 +1,31 @@
 <template>
   <div class="p-grid">
     <div class="p-col-12 p-md-6 p-lg-4">
-      <Card
-        class="p-fluid p-shadow-4 p-ripple gray"
-        v-ripple
-        @click="goToIngredients"
-      >
-        <template #title>
-          Add ingredient
-        </template>
-        <template #content>
-          <p>Add your ingredients</p>
-        </template>
-      </Card>
+      <ion-card class="ion-activatable" @click="goToIngredients">
+        <ion-card-header>
+          <ion-card-title> Add ingredient </ion-card-title>
+        </ion-card-header>
+        <ion-card-content> Add your ingredients </ion-card-content>
+        <ion-ripple-effect></ion-ripple-effect>
+      </ion-card>
     </div>
     <div class="p-col-12 p-md-6 p-lg-4">
-      <Card class="p-fluid p-shadow-4 p-ripple gray" v-ripple>
-        <template #title>
-          Add recipee
-        </template>
-        <template #content>
-          <p>Add your recipees</p>
-        </template>
-      </Card>
+      <ion-card class="ion-activatable">
+        <ion-card-header>
+          <ion-card-title> Add recipee </ion-card-title>
+        </ion-card-header>
+        <ion-card-content> Add your recipees </ion-card-content>
+        <ion-ripple-effect></ion-ripple-effect>
+      </ion-card>
     </div>
     <div class="p-col-12 p-md-6 p-lg-4">
-      <Card class="p-fluid p-shadow-4 p-ripple gray" v-ripple>
-        <template #title>
-          Planning
-        </template>
-        <template #content>
-          <p>Plan your week</p>
-        </template>
-      </Card>
+      <ion-card class="ion-activatable">
+        <ion-card-header>
+          <ion-card-title> Planning </ion-card-title>
+        </ion-card-header>
+        <ion-card-content> Plan your week </ion-card-content>
+        <ion-ripple-effect></ion-ripple-effect>
+      </ion-card>
     </div>
   </div>
 </template>
@@ -40,9 +33,13 @@
 <script>
 import { defineComponent } from 'vue';
 import router from '@/router';
+import { IonRippleEffect } from '@ionic/vue';
 
 export default defineComponent({
   name: 'TileScreen',
+  components: {
+    IonRippleEffect
+  },
   methods: {
     goToIngredients() {
       router.push({ path: '/IngredientsScreen' });

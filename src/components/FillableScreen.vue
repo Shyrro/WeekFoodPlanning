@@ -1,19 +1,15 @@
 <template>
   <div>
-    <div class="p-grid">
-      <div class="p-col-12 p-md-12 p-lg-12">
-        <Button
-          class="p-button-rounded p-button-text"
-          icon="pi pi-angle-left"
-          @click="goBack"
-        />
-      </div>
-      <div class="p-col-12 p-md-6 p-lg-6">
-        <slot name="left-panel"> </slot>
-      </div>
-      <div class="p-col-12 p-md-6 p-lg-6">
-        <slot name="right-panel"> </slot>
-      </div>
+    <div>
+      <ion-button shape="round" @click="goBack">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </div>
+    <div>
+      <slot name="left-panel"> </slot>
+    </div>
+    <div>
+      <slot name="right-panel"> </slot>
     </div>
   </div>
 </template>

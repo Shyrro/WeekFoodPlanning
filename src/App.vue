@@ -3,7 +3,9 @@
     <ion-header>
       <h2 class="header-text">My Food Friend</h2>
     </ion-header>
-    <ion-content><ion-router-outlet /></ion-content>
+    <ion-content>
+      <ion-router-outlet />
+    </ion-content>
   </ion-app>
 </template>
 <script lang="ts">
@@ -34,10 +36,9 @@ export default defineComponent({
 .header-text {
   font-family: 'SweetsDelight';
   padding: 20px;
-
+  text-align: center;
   text-shadow: 0px 0px 2px white, 4px 3px 0px white;
 }
-
 
 html {
   background-color: #ffffff;

@@ -4,11 +4,11 @@
       <li
         v-for="item in list"
         :key="item._id"
-        class="p-tag p-tag-rounded tag-size"
+        class="tag"
         :style="`background:#${item.color}`"
         @click="selectItem(item)"
       >
-        {{ item.name }}
+        <ion-chip>{{ item.name }}</ion-chip>
       </li>
     </ul>
   </div>
@@ -16,12 +16,16 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { IonChip } from '@ionic/vue';
 
 export default defineComponent({
   props: {
     list: {
       type: Array
     }
+  },
+  components: {
+    IonChip
   },
   emits: ['select-item'],
   methods: {
@@ -36,7 +40,8 @@ export default defineComponent({
 ul {
   list-style-type: none;
 
-  .tag-size {
+  .tag {
+    display: inline-block;
     font-size: 1em;
   }
 }

@@ -17,7 +17,7 @@ export const createLocalStore = () => {
 
   const localState = reactive({ selectedIngredient });
 
-  const mutateIngredient = (payload: IngredientModel) => {
+  const mutateIngredient = (payload: IngredientModel) => {    
     localState.selectedIngredient = payload;
   };
   const localStore: IngredientStore = {

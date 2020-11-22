@@ -1,34 +1,31 @@
 <template>
-  <Card class="p-shadow-2 form-card">
-    <template #title>
-      Add ingredient
-    </template>
-    <template #content>
-      <div class="p-fluid">
-        <span class="p-float-label p-field">
-          <InputText
-            v-model="upsertedIngredient.name"
-            id="ingredient-name"
-            type="text"
-          />
-          <label for="ingredient-name">Ingredient name </label>
-        </span>
-        <Dropdown
-          v-model="upsertedIngredient.unit"
-          :options="optionUnits"
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title> Add ingredient </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="floating">Ingredient name </ion-label>
+        <ion-input v-model="upsertedIngredient.name" type="text" />
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Unité</ion-label>
+        <ion-select
           placeholder="Select a unit"
-        />
-        <span class="p-text-left">Tag color : </span>
-        <ColorPicker id="color-picker" v-model="upsertedIngredient.color" />
-      </div>
-
-      <Button class="p-button-outlined" label="Add" @click="addIngredient" />
-    </template>
-  </Card>
+          v-model="upsertedIngredient.unit"
+        >
+          <ion-select-option v-for="unit in optionUnits" :key="unit">
+            {{ unit }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-button color="primary" @click="addIngredient"> Add </ion-button>
+    </ion-card-content>
+  </ion-card>
 </template>
 
 <script lang="ts">
-import { defineAsyncComponent, defineComponent, inject, PropType } from 'vue';
+import { defineComponent, inject, PropType } from 'vue';
 import { useUpsert } from '@/composition-functions/requests/handleRequests';
 
 import { IngredientModel } from '@/Models/Ingredient';
@@ -46,9 +43,6 @@ export default defineComponent({
       upsertIngredient,
       localStore
     };
-  },
-  components: {
-    ColorPicker: defineAsyncComponent(() => import('primevue/colorpicker'))
   },
   data() {
     return {
@@ -83,7 +77,7 @@ export default defineComponent({
       if (!this.upsertedIngredient._id) {
         let insertId = nanoid();
         const idExists = (id: string, ingredients: IngredientModel[]) =>
-          ingredients.find(ing => ing._id === id);
+          ingredients.find((ing) => ing._id === id);
 
         while (idExists(insertId, this.ingredients)) {
           insertId = nanoid();
@@ -96,7 +90,7 @@ export default defineComponent({
           this.$emit('upserted-ingredient', this.upsertedIngredient);
           this.upsertedIngredient = {} as IngredientModel;
         })
-        .catch(e => {
+        .catch((e) => {
           console.error(e);
           // TODO : write error message on screen
         });
@@ -104,21 +98,3 @@ export default defineComponent({
   }
 });
 </script>
-<style lang="scss" scoped>
-.form-card {
-  .p-card-body {
-    .p-card-content {
-      display: flex;
-      flex-direction: column;
-    }
-    .p-fluid {
-      display: flex;
-      flex-direction: column;
-    }
-  }
-
-  .p-button {
-    align-self: flex-end;
-  }
-}
-</style>
