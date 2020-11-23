@@ -1,47 +1,39 @@
 <template>
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title> Add ingredient </ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <ion-item>
-        <ion-label position="floating">Ingredient name </ion-label>
-        <ion-input v-model="upsertedIngredient.name" type="text" />
-      </ion-item>
-      <ion-item>
-        <ion-label position="floating">Unité</ion-label>
-        <ion-select
-          placeholder="Select a unit"
-          v-model="upsertedIngredient.unit"
-        >
-          <ion-select-option v-for="unit in optionUnits" :key="unit">
-            {{ unit }}
-          </ion-select-option>
-        </ion-select>
-      </ion-item>
-      <ion-button color="primary" @click="addIngredient"> Add </ion-button>
-    </ion-card-content>
-  </ion-card>
+  <ion-header>
+    <ion-toolbar>
+      <ion-title> Add ingredient </ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content class="ion-padding add-form-content">
+    <ion-item>
+      <ion-label position="floating">Ingredient name </ion-label>
+      <ion-input v-model="newIngredient.name" type="text" />
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Unité</ion-label>
+      <ion-select placeholder="Select a unit" v-model="newIngredient.unit">
+        <ion-select-option v-for="unit in optionUnits" :key="unit">
+          {{ unit }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-button color="primary" @click="addIngredient"> Add </ion-button>
+  </ion-content>
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, PropType } from 'vue';
+import { defineComponent, PropType } from 'vue';
 import { useUpsert } from '@/composition-functions/requests/handleRequests';
 
 import { IngredientModel } from '@/Models/Ingredient';
 import { nanoid } from 'nanoid';
-import {
-  ingredientStateIdentifier,
-  IngredientStore
-} from './local-states/IngredientState';
 
 export default defineComponent({
   setup() {
     const upsertIngredient = useUpsert<IngredientModel>('ingredients');
-    const localStore = inject(ingredientStateIdentifier) as IngredientStore;
+
     return {
-      upsertIngredient,
-      localStore
+      upsertIngredient
     };
   },
   data() {
@@ -57,40 +49,30 @@ export default defineComponent({
     }
   },
   emits: ['upserted-ingredient'],
-  computed: {
-    upsertedIngredient: {
-      get(): IngredientModel {
-        return this.localStore.state.selectedIngredient;
-      },
-      set(value: IngredientModel): void {
-        this.localStore.mutateIngredient(value);
-      }
-    }
-  },
   methods: {
     addIngredient() {
-      if (!this.upsertedIngredient.name) return;
+      if (!this.newIngredient.name) return;
       // TODO : Add message to add cumpolsory name
       // If we want to update an ingredient, the id always exists
       // We want to look for existant id only if the current id is empty
       // empty _id means new ingredient
-      if (!this.upsertedIngredient._id) {
+      if (!this.newIngredient._id) {
         let insertId = nanoid();
         const idExists = (id: string, ingredients: IngredientModel[]) =>
-          ingredients.find((ing) => ing._id === id);
+          ingredients.find(ing => ing._id === id);
 
         while (idExists(insertId, this.ingredients)) {
           insertId = nanoid();
         }
-        this.upsertedIngredient._id = insertId;
+        this.newIngredient._id = insertId;
       }
 
-      this.upsertIngredient(this.upsertedIngredient)
+      this.upsertIngredient(this.newIngredient)
         .then(() => {
-          this.$emit('upserted-ingredient', this.upsertedIngredient);
-          this.upsertedIngredient = {} as IngredientModel;
+          this.$emit('upserted-ingredient', this.newIngredient);
+          this.newIngredient = {} as IngredientModel;
         })
-        .catch((e) => {
+        .catch(e => {
           console.error(e);
           // TODO : write error message on screen
         });

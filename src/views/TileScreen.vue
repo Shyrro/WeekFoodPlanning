@@ -1,7 +1,7 @@
 <template>
   <div class="p-grid">
     <div class="p-col-12 p-md-6 p-lg-4">
-      <ion-card class="ion-activatable" @click="goToIngredients">
+      <ion-card class="ion-activatable" @click="openAddFormModal">
         <ion-card-header>
           <ion-card-title> Add ingredient </ion-card-title>
         </ion-card-header>
@@ -32,8 +32,10 @@
 
 <script>
 import { defineComponent } from 'vue';
+import { modalController } from '@ionic/vue';
 import router from '@/router';
 import { IonRippleEffect } from '@ionic/vue';
+import AddIngredientForm from '@/components/AddIngredientForm.vue';
 
 export default defineComponent({
   name: 'TileScreen',
@@ -43,6 +45,12 @@ export default defineComponent({
   methods: {
     goToIngredients() {
       router.push({ path: '/IngredientsScreen' });
+    },
+    async openAddFormModal() {
+      const modal = await modalController.create({
+        component: AddIngredientForm
+      });
+      return modal.present();
     }
   }
 });

@@ -49,19 +49,9 @@ export default defineComponent({
       import('@/components/IngredientTags.vue')
     )
   },
-  data() {
-    return {
-      theme: 'dark'
-    };
-  },
   methods: {
     goBack() {
       router.go(-1);
-    },
-    changeTheme() {
-      import(
-        `primevue/resources/themes/bootstrap4-${this.theme}-purple/theme.css`
-      );
     },
     updateIngredients(upsertedIngredient: IngredientModel): void {
       const indexToUpdate = this.ingredients.findIndex(

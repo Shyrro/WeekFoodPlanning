@@ -58,7 +58,11 @@ import {
   IonSelectOption,
   IonButton,
   IonIcon,
-  IonSpinner
+  IonSpinner,
+  IonContent,
+  IonHeader,
+  IonTitle,
+  IonToolbar
 } from '@ionic/vue';
 
 const app = createApp(App);
@@ -72,7 +76,11 @@ app.component('IonCard', IonCard);
 app.component('IonCardTitle', IonCardTitle);
 app.component('IonCardContent', IonCardContent);
 app.component('IonCardHeader', IonCardHeader);
+app.component('IonContent', IonContent);
+app.component('IonHeader', IonHeader);
 app.component('IonInput', IonInput);
+app.component('IonTitle', IonTitle);
+app.component('IonToolbar', IonToolbar);
 app.component('IonLabel', IonLabel);
 app.component('IonItem', IonItem);
 app.component('IonSelect', IonSelect);
