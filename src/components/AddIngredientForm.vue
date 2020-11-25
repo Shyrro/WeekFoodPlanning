@@ -17,14 +17,15 @@
         </ion-select-option>
       </ion-select>
     </ion-item>
-    <ion-button color="primary" @click="addIngredient"> Add </ion-button>
+    <ion-button color="primary" @click="addIngredient(newIngredient)">
+      Add
+    </ion-button>
   </ion-content>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
 import { useUpsert } from '@/composition-functions/requests/handleRequests';
-
 import { IngredientModel } from '@/Models/Ingredient';
 import { nanoid } from 'nanoid';
 
@@ -50,13 +51,13 @@ export default defineComponent({
   },
   emits: ['upserted-ingredient'],
   methods: {
-    addIngredient() {
-      if (!this.newIngredient.name) return;
+    addIngredient(ingredient: IngredientModel) {
+      if (!ingredient.name) return;
       // TODO : Add message to add cumpolsory name
       // If we want to update an ingredient, the id always exists
       // We want to look for existant id only if the current id is empty
       // empty _id means new ingredient
-      if (!this.newIngredient._id) {
+      if (!ingredient._id) {
         let insertId = nanoid();
         const idExists = (id: string, ingredients: IngredientModel[]) =>
           ingredients.find(ing => ing._id === id);
@@ -64,12 +65,12 @@ export default defineComponent({
         while (idExists(insertId, this.ingredients)) {
           insertId = nanoid();
         }
-        this.newIngredient._id = insertId;
+        ingredient._id = insertId;
       }
 
-      this.upsertIngredient(this.newIngredient)
+      this.upsertIngredient(ingredient)
         .then(() => {
-          this.$emit('upserted-ingredient', this.newIngredient);
+          this.$emit('upserted-ingredient', ingredient);
           this.newIngredient = {} as IngredientModel;
         })
         .catch(e => {
