@@ -20,11 +20,13 @@
     <ion-card-content> Plan your week </ion-card-content>
     <ion-ripple-effect></ion-ripple-effect>
   </ion-card>
+  <ion-modal :is-open="isOpenRef" @onDidDismiss="setOpen(false)">
+    <AddIngredientForm @form-consumed="setOpen(false)"></AddIngredientForm>
+  </ion-modal>
 </template>
 
-<script>
-import { defineComponent } from 'vue';
-import { modalController } from '@ionic/vue';
+<script lang="ts">
+import { defineComponent, ref } from 'vue';
 import router from '@/router';
 import { IonRippleEffect } from '@ionic/vue';
 import AddIngredientForm from '@/components/AddIngredientForm.vue';
@@ -32,17 +34,21 @@ import AddIngredientForm from '@/components/AddIngredientForm.vue';
 export default defineComponent({
   name: 'TileScreen',
   components: {
-    IonRippleEffect
+    IonRippleEffect,
+    AddIngredientForm
+  },
+  setup() {
+    const isOpenRef = ref(false);
+    const setOpen = (state: boolean) => (isOpenRef.value = state);
+
+    return { isOpenRef, setOpen };
   },
   methods: {
     goToIngredients() {
       router.push({ path: '/IngredientsScreen' });
     },
-    async openAddFormModal() {
-      const modal = await modalController.create({
-        component: AddIngredientForm,
-      });
-      return modal.present();
+    openAddFormModal() {
+      this.isOpenRef = true;
     }
   }
 });

@@ -1,15 +1,15 @@
-import { onMounted, Ref, ref } from "vue";
-import axios, { AxiosError, AxiosResponse } from "axios";
+import { onMounted, Ref, ref } from 'vue';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 
 export function useFetch<T>(dbTable: string): Ref<Array<T>> {
   const apiString = `https://nextjs.shyrro.vercel.app/api/${dbTable}`;
-  const fetchedObject: Ref<Array<T>> = ref([]);  
+  const fetchedObject: Ref<Array<T>> = ref([]);
 
   onMounted(() => {
     axios
       .get<Array<T>>(apiString)
       .then((dbObject: AxiosResponse<Array<T>>) => {
-        fetchedObject.value = dbObject.data;        
+        fetchedObject.value = dbObject.data;
       })
       .catch((error: AxiosError) => {
         console.log(error.message);
@@ -19,16 +19,15 @@ export function useFetch<T>(dbTable: string): Ref<Array<T>> {
   return fetchedObject;
 }
 
-export function useUpsert<T> (dbTable: string) {
-  
+export function useUpsert<T>(dbTable: string) {
   const putData = async function(dbObject: T) {
     const apiString = `https://nextjs.shyrro.vercel.app/api/${dbTable}`;
     try {
       await axios.put(apiString, dbObject);
-    } catch(error) {
+    } catch (error) {
       console.log(error.message);
-    }    
-  }
-  
+    }
+  };
+
   return putData;
 }

@@ -1,7 +1,12 @@
 <template>
   <ion-header>
     <ion-toolbar>
-      <ion-title> Add ingredient </ion-title>
+      <ion-title>
+        Add ingredient
+        <ion-button @click="consumeForm">
+          <ion-icon name="close-outline"></ion-icon>
+        </ion-button>
+      </ion-title>
     </ion-toolbar>
   </ion-header>
   <ion-content class="ion-padding add-form-content">
@@ -49,7 +54,7 @@ export default defineComponent({
       default: [] as IngredientModel[]
     }
   },
-  emits: ['upserted-ingredient'],
+  emits: ['form-consumed'],
   methods: {
     addIngredient(ingredient: IngredientModel) {
       if (!ingredient.name) return;
@@ -70,13 +75,16 @@ export default defineComponent({
 
       this.upsertIngredient(ingredient)
         .then(() => {
-          this.$emit('upserted-ingredient', ingredient);
+          this.$emit('form-consumed', ingredient);
           this.newIngredient = {} as IngredientModel;
         })
         .catch(e => {
           console.error(e);
           // TODO : write error message on screen
         });
+    },
+    consumeForm(object) {
+      this.$emit('form-consumed', object);
     }
   }
 });

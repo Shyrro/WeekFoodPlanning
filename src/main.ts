@@ -62,7 +62,8 @@ import {
   IonContent,
   IonHeader,
   IonTitle,
-  IonToolbar
+  IonToolbar,
+  IonModal
 } from '@ionic/vue';
 
 const app = createApp(App);
@@ -88,6 +89,7 @@ app.component('IonSelectOption', IonSelectOption);
 app.component('IonButton', IonButton);
 app.component('IonIcon', IonIcon);
 app.component('IonSpinner', IonSpinner);
+app.component('IonModal', IonModal);
 
 router.isReady().then(() => {
   app.mount('#app');

@@ -9,8 +9,8 @@ module.exports = {
   },
   variants: {
     variants: {
-      translate: ["responsive", "hover", "focus", "motion-safe"],
-      textDecoration: ["responsive", "hover", "focus", "focus-visible"]
+      translate: ['responsive', 'hover', 'focus', 'motion-safe'],
+      textDecoration: ['responsive', 'hover', 'focus', 'focus-visible']
     }
   },
   plugins: []
